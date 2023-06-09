@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title style="color:purple;">Soc2 Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <style>
+        #loading-spinner {
+            position: relative;
+            margin-top: 30px !important;
+            padding-bottom:30px !important;
+            margin-botton: 20px !important;
+        }
+        #loading-spinner:before {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            margin-top: -25px;
+            margin-left: -25px;
+            border-radius: 50%;
+            border: 5px solid #5130D7;
+            animation: spinner 0.6s linear infinite;
+        }
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .hidden {
+            display: none;
+        }
+   </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Soc2 Search</h1>
+        <h6>Ask questions to AWS 2022 SOC2</h6>
+        <br />
+        <form method="post" action="/answer"  onsubmit="return validateQuestion()">
+            <div class="form-group">
+                <p>Be as detailed and specific as possible in your query.<br/> Add context and ask questions as if you're talking to a human.</p>
+                <label for="question">Enter your question</label>
+                <input type="text" class="form-control" id="question" name="question" required>
+                <div id="question-error" class="text-danger mt-1"></div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
+            </div>
+            <div id="result" class="card mt-4 hidden">
+              <div class="card-body">
+                  <ul id="results-list"></ul>
+                  <div id="loading-spinner" class="hidden"></div>
+              </div>
+            </div>
+        </form>
+    </div>
+  <script>
+        function validateQuestion() {
+            const questionInput = document.getElementById("question");
+            const questionValue = questionInput.value.trim();
+            const errorDiv = document.getElementById("question-error");
+            if (questionValue.length < 10) {
+                errorDiv.innerText = "Query should be 10 characters";
+                return false;
+            } else if (questionValue.length >= 400) {
+                errorDiv.innerText = "Query should be less than 400 characters";
+                return false;
+            } else {
+                errorDiv.innerText = "";
+                renderLoad()
+                return true;
+            }
+        }
+        function renderLoad(){
+              const submitBtn = document.querySelector('#submit-btn');
+              submitBtn.classList.add('hidden'); // hide submit button
+              const resultsDiv = document.querySelector('#result');
+              
+              const resultsList = document.querySelector('#results-list');
+              resultsList.innerHTML = '';
+              const results = ['Getting query embeddings', 'Searching SOC2 embeddings', 'Creating prompt', 'Sending request to GPT-3', 'Waiting for response'];
+              let i = 0;
+              const intervalId = setInterval(() => {
+                  if (i === 5) {
+                      clearInterval(intervalId);
+                      const loadingSpinner = document.querySelector('#loading-spinner');
+                      loadingSpinner.classList.remove('hidden');
+                  } else {
+                      if(i===0){
+                        resultsDiv.classList.remove('hidden');
+                      }
+                      const li = document.createElement('li');
+                      li.textContent = results[i];
+                      resultsList.appendChild(li);
+                      i++;
+                  }
+              }, 2000);
+        }
+    </script>
+</body>
+</html>

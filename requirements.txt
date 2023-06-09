@@ -1,0 +1,9 @@
+PyPDF4
+pandas
+openai
+requests
+scipy
+plotly
+gunicorn==20.1.0
+matplotlib
+scikit-learn

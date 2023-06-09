@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Soc2 Search - Answer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Soc2 Search</h1>
+            <form method="get" action="/">
+                <button type="submit" class="btn btn-primary">Question?</button>
+            </form>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Question: {{ question }}</h5>
+                <h5 class="card-title">Answer:</h5>
+                <p class="card-text">{{ answer }}</p>
+            </div>
+        </div>
+        {% if references is defined and references|length > 0 %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">References:</h5>
+                {% for reference in references %}
+                    <p class="card-text">{{ reference }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div
